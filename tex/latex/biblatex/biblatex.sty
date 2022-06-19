@@ -8837,6 +8837,7 @@
 \define@key{blx@bib1}{heading}{}
 \define@key{blx@bib1}{env}{}
 \define@key{blx@bib1}{title}{}
+\define@key{blx@bib1}{label}{}
 \define@key{blx@bib1}{prenote}{}
 \define@key{blx@bib1}{postnote}{}
 \define@key{blx@bib1}{omitnumbers}[]{}
@@ -8863,6 +8864,7 @@
 \define@key{blx@biblist1}{heading}{}
 \define@key{blx@biblist1}{env}{}
 \define@key{blx@biblist1}{title}{}
+\define@key{blx@biblist1}{label}{}
 \define@key{blx@biblist1}{prenote}{}
 \define@key{blx@biblist1}{postnote}{}
 
@@ -9068,6 +9070,10 @@
 \define@key{blx@bib2}{title}{\def\blx@thetitle{#1}}
 \define@key{blx@biblist2}{title}{\def\blx@thetitle{#1}}
 
+\define@key{blx@bhd}{label}{\def\blx@thelabel{#1}}
+\define@key{blx@bib2}{label}{\def\blx@thelabel{#1}}
+\define@key{blx@biblist2}{label}{\def\blx@thelabel{#1}}
+
 \cslet{blx@note@}\@empty
 \def\blx@key@bibnote#1#2{%
   \ifcsundef{blx@note@#2}
@@ -9155,10 +9161,12 @@
 \def\blx@printbibheading[#1]{%
   \let\blx@theheading\blx@default@theheading
   \let\blx@thetitle\blx@default@thetitle
+  \undef\blx@thelabel
   \blx@safe@actives
   \setkeys{blx@bhd}{#1}%
   \blx@rest@actives
   \blx@bibheading\blx@theheading\blx@thetitle
+  \blx@biblabel\blx@thelabel
   \endgroup}
 
 % We use this to determine whether an explicit value for resetnumbers is passed to
@@ -9183,6 +9191,7 @@
   \let\blx@theprenote\blx@default@theprenote
   \let\blx@thepostnote\blx@default@thepostnote
   \let\blx@thetitle\blx@default@thetitle
+  \undef\blx@thelabel
   % defaults
   \let\blx@tempa\@empty% before there is a .bbl, this must not be undef
   \edef\blx@tempe{\the\c@refsection}% default refsection is current
@@ -9237,6 +9246,7 @@
   \let\blx@theprenote\blx@default@theprenote
   \let\blx@thepostnote\blx@default@thepostnote
   \let\blx@thetitle\blx@default@thetitle
+  \undef\blx@thelabel
   \c@refsection\z@
   \blx@safe@actives
   \setkeys{blx@bbs}{#1}%
@@ -9276,6 +9286,7 @@
   \let\blx@theprenote\blx@default@theprenote
   \let\blx@thepostnote\blx@default@thepostnote
   \let\blx@thetitle\blx@default@thetitle
+  \undef\blx@thelabel
   \c@refsegment\@ne
   \blx@safe@actives
   \setkeys{blx@bbg}{#1}%
@@ -9320,6 +9331,7 @@
   \let\blx@theprenote\blx@default@theprenote
   \let\blx@thepostnote\blx@default@thepostnote
   \let\blx@thetitle\blx@default@thetitle
+  \undef\blx@thelabel
   \c@refsection\z@
   \blx@safe@actives
   \setkeys{blx@bbc}{#1}%
@@ -9348,6 +9360,7 @@
 % {<entrykey>,...}
 \def\blx@bibliography#1{%
   \blx@bibheading\blx@theheading\blx@thetitle
+  \blx@biblabel\blx@thelabel
   \blx@bibnote\blx@theprenote
   \begingroup
   \blx@bibinit
@@ -9388,6 +9401,11 @@
     {\csuse{blx@head@#1}[#2]}%
   \let\newrefsection\blx@newrefsection
   \let\newrefsegment\blx@newrefsegment}
+
+\def\blx@biblabel#1{%
+  \ifdefvoid#1
+    {}
+    {\expandafter\label\expandafter{#1}}}
 
 \def\blx@bibnote#1{%
   \ifdefempty#1
@@ -9627,6 +9645,7 @@
   \let\blx@theprenote\@empty
   \let\blx@thepostnote\@empty
   \let\blx@thetitle\@empty
+  \undef\blx@thelabel
   % defaults
   \let\blx@tempa\@empty% before there is a .bbl, this must not be undef
   % default sorting template and template name for list is same name as list
@@ -9697,6 +9716,7 @@
     \@restonecolfalse
   \fi
   \blx@bibheading\blx@theheading\blx@thetitle
+  \blx@biblabel\blx@thelabel
   \blx@bibnote\blx@theprenote
   \begingroup
   \blx@bibinit
